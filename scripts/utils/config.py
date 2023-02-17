@@ -67,7 +67,7 @@ def load_config(config_path='scripts/configs/default_config.yaml'):
     job_id = args.job_id
 
     with open(path, 'r') as f:
-        config = yaml.load(f)
+        config = yaml.load(f, yaml.Loader)
 
     # set seed
     seed = config['training']['seed']
