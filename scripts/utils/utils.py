@@ -6,7 +6,7 @@ import torch.nn
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 import scipy
-from skimage.measure import compare_ssim as ssim
+from skimage.metrics import structural_similarity as ssim
 
 
 def pytorch_to_numpy(array, is_batch=True, flip=True):
