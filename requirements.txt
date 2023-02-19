@@ -1,7 +1,7 @@
 torch
 torchvision
 matplotlib
-imageio
+imageio==2.4.1
 scikit-image
 scipy
 cython
