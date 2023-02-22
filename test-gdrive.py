@@ -10,7 +10,7 @@ import glob
 import scripts.utils.logger as log
 from scripts.trainer import TrainerPlatonic, TrainerPlatonic3D, Trainer3D
 
-checkpoint_path = '/content/drive/MyDrive/AI/platonicgan/stats/checkpoint.pkl'
+checkpoint_path = '/content/drive/MyDrive/AI/platonicgan/output/1_Tree_platonic_reconstruction_tree_emission_absorption_g2d1.0_g3d0.0_rec2d8.0_rec3d0.0_n_views1_lr_g0.0025_lr_d1e-05_bs8_random/stats/checkpoint.pkl'
 config_path = 'scripts/configs/config_tree.yaml'
 output_path = '/content/drive/MyDrive/AI/platonicgan/output'
 
