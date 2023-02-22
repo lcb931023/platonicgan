@@ -11,9 +11,14 @@ import os
 
 # expected volume shape: w x h x d x c
 def volume_to_raw(volume, path, name, save_info=True):
+    volume = volume.detach().cpu().numpy() # convert to numpy array
+
     if volume.dtype == np.dtype(np.float32):
         volume = volume * 255.0
         volume = volume.astype(np.uint8)
+
+    print(volume.dtype)
+    print(volume.shape)
 
     if save_info:
         f = open('{}/{}.raw.info'.format(path, name), 'w')
@@ -26,10 +31,20 @@ def volume_to_raw(volume, path, name, save_info=True):
         f.write('BitsUsed {}\n'.format(8))
         f.write('ChannelsUsed {}\n'.format(volume.shape[3]))
         f.close()
+    
+    volume_path = '{}/{}.raw'.format(path, name)
 
-    f = open('{}/{}.raw'.format(path, name), 'wb')
-    f.write(bytearray(volume))
-    f.close()
+    # torch.save(volume, volume_path)
+
+    volume.tofile(volume_path)
+
+    # f = open('{}/{}.raw'.format(path, name), 'wb')
+    # volume = volume.detach().cpu().numpy() # convert to numpy array
+    # print(type(volume))
+    # print(len(volume))
+
+    # f.write(volume.tobytes())
+    # f.close()
 
 
 def read_image(image_path, resolution=None):
@@ -74,7 +89,7 @@ def read_volume(path, target_res=64):
         info[key] = int(value)
 
     bytestream = np.fromfile(path, dtype=np.uint8)
-    volume = np.reshape(bytestream, (info['Depth'], info['Height'], info['Width'], info['ChannelsUsed']))
+    volume = np.reshape(bytestream, (info['Depth'], info['Height'], info['Width'], info['ChannelsUsed'], 64))
     volume = np.flip(volume, axis=2).copy()
     volume = np.flip(volume, axis=1).copy()
     volume = np.flip(volume, axis=0).copy()
@@ -83,7 +98,7 @@ def read_volume(path, target_res=64):
     for channel in range(info['ChannelsUsed']):
         volume[..., channel] = ndimage.filters.gaussian_filter(volume[..., channel], 1, truncate=2.0)
 
-    volume = ndimage.interpolation.zoom(volume, (target_res / info['Depth'], target_res / info['Height'], target_res / info['Width'], 1), order=0)
+    volume = ndimage.interpolation.zoom(volume, (target_res / info['Depth'], target_res / info['Height'], target_res / info['Width'], 1, 1), order=0)
 
     return volume
 
