@@ -52,7 +52,12 @@ with torch.no_grad():
         vector = vector.to(param.device)
 
         z = encoder(x_input)
+        # z = utils.generate_z(param, param.training.z_size, True)
 
         output_volume = generator(z)
+        # flips the tensor, moving dimensions to first 3 and channel to 4th, and omit the 5th.
+        output_volume = output_volume.permute(2,3,4,1,0)
+        output_volume = output_volume[:, :, :, :, 0]
+
         output_name = '{}-{}'.format(param.task, object_id[0])
         dh.volume_to_raw(output_volume, output_path, output_name)
