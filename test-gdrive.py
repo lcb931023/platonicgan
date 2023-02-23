@@ -51,10 +51,7 @@ with torch.no_grad():
         volume = volume.to(param.device)
         vector = vector.to(param.device)
 
-        if not param.task == 'reconstruction':
-            z = encoder(x_input)
-        else:
-            z = utils.generate_z(param, param.training.z_size)
+        z = encoder(x_input)
 
         output_volume = generator(z)
         output_name = '{}-{}'.format(param.task, object_id[0])
