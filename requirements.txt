@@ -13,4 +13,4 @@ opencv-python
 tensorboardX
 tensorflow
 moviepy
-rembg
+# rembg # this takes a long time to install, and is only used for the background removal
