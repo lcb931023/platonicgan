@@ -13,3 +13,4 @@ opencv-python
 tensorboardX
 tensorflow
 moviepy
+rembg
